@@ -18,13 +18,12 @@ public final class ArrayUtil {
         }
         return list;
     }
-    public static Label[] stringsToLabels(String[] array){
+    public static Label[] stringsToLabels(String[] array, Font font){
         Label[] list = new Label[array.length];
         int count = 0;
         for(String s : array){
             Label label = new Label(s);
-
-            label.setFont(new Font(17.0));
+            label.setFont(font);
             list[count] = label;
             count++;
         }

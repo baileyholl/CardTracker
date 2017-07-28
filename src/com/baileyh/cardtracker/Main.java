@@ -13,7 +13,6 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("scenes/card_tracker.fxml"));
         primaryStage.setTitle("Card Tracker");
         Scene scene = new Scene(root, 500, 500);
-        scene.getStylesheets().add(getClass().getResource("scenes/list.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();

@@ -1,8 +1,8 @@
 package com.baileyh.cardtracker.util;
 
 import java.awt.*;
+import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -23,7 +23,15 @@ public final class WebUtil {
     public static void openWebpage(URL url) {
         try {
             openWebpage(url.toURI());
-        } catch (URISyntaxException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void openWebpage(String url){
+        try {
+            openWebpage(new URL(url));
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
