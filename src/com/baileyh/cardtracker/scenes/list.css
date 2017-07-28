@@ -1,0 +1,9 @@
+.list-cell:inactive{
+    -fx-text-fill: red;
+}
+.list-cell:active{
+-fx-text-fill: green;
+}
+.list-cell:filled:selected{
+    -fx-text-fill: red;
+}

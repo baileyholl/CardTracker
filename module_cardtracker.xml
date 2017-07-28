@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_cardtracker" default="compile.module.cardtracker">
+  <dirname property="module.cardtracker.basedir" file="${ant.file.module_cardtracker}"/>
+  
+  <property name="module.jdk.home.cardtracker" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.cardtracker" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.cardtracker" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.cardtracker" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="cardtracker.output.dir" value="${module.cardtracker.basedir}/out/production/CardTracker"/>
+  <property name="cardtracker.testoutput.dir" value="${module.cardtracker.basedir}/out/test/CardTracker"/>
+  
+  <path id="cardtracker.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="cardtracker.module.production.classpath">
+    <path refid="${module.jdk.classpath.cardtracker}"/>
+  </path>
+  
+  <path id="cardtracker.runtime.production.module.classpath">
+    <pathelement location="${cardtracker.output.dir}"/>
+  </path>
+  
+  <path id="cardtracker.module.classpath">
+    <path refid="${module.jdk.classpath.cardtracker}"/>
+    <pathelement location="${cardtracker.output.dir}"/>
+  </path>
+  
+  <path id="cardtracker.runtime.module.classpath">
+    <pathelement location="${cardtracker.testoutput.dir}"/>
+    <pathelement location="${cardtracker.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.cardtracker">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.cardtracker">
+    <patternset refid="excluded.from.module.cardtracker"/>
+  </patternset>
+  
+  <path id="cardtracker.module.sourcepath">
+    <dirset dir="${module.cardtracker.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.cardtracker" depends="compile.module.cardtracker.production,compile.module.cardtracker.tests" description="Compile module CardTracker"/>
+  
+  <target name="compile.module.cardtracker.production" depends="register.custom.compilers" description="Compile module CardTracker; production classes">
+    <mkdir dir="${cardtracker.output.dir}"/>
+    <javac2 destdir="${cardtracker.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.cardtracker}/javac">
+      <compilerarg line="${compiler.args.cardtracker}"/>
+      <bootclasspath refid="cardtracker.module.bootclasspath"/>
+      <classpath refid="cardtracker.module.production.classpath"/>
+      <src refid="cardtracker.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.cardtracker"/>
+    </javac2>
+    
+    <copy todir="${cardtracker.output.dir}">
+      <fileset dir="${module.cardtracker.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.cardtracker.tests" depends="register.custom.compilers,compile.module.cardtracker.production" description="compile module CardTracker; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.cardtracker" description="cleanup module">
+    <delete dir="${cardtracker.output.dir}"/>
+    <delete dir="${cardtracker.testoutput.dir}"/>
+  </target>
+</project>
