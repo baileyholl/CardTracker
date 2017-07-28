@@ -44,7 +44,7 @@ public class Controller implements Initializable
         resetButton.setOnAction(event -> loadCards());
         aboutMenuItem.setOnAction(event -> {
             try {
-                WebUtil.openWebpage(new URI(""));
+                WebUtil.openWebpage(new URI("https://github.com/baileyholl/CardTracker"));
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
