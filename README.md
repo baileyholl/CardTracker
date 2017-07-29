@@ -1,6 +1,5 @@
 # CardTracker
-
-Card Tracker allows you to count cards by striking them off of each suit list.
+A card counting program for games like Spades or Hearts. Provides a list of cards for each suit with the ability to strike them as played. Provides additional information about the game such as card/hands played.
 
 # Features
 * Completely Manual
