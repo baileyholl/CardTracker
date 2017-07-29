@@ -34,6 +34,16 @@ public class Controller implements Initializable
     private ListView<Label> clubsList;
     @FXML
     private ListView<Label> diamondsList;
+    @FXML
+    private RadioMenuItem handCounterMenu;
+    @FXML
+    private RadioMenuItem cardCounterMenu;
+    @FXML
+    private Label handsPlayedLabel;
+    @FXML
+    private Label cardsMarkedLabel;
+    private static int handsPlayed;
+    private static int cardsMarked;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,14 +54,24 @@ public class Controller implements Initializable
         heartsList.setOnMouseClicked(event -> toggleCard(event, heartsList));
         clubsList.setOnMouseClicked(event -> toggleCard(event, clubsList));
         diamondsList.setOnMouseClicked(event -> toggleCard(event, diamondsList));
+        handCounterMenu.setOnAction(event -> handsPlayedLabel.setVisible(handCounterMenu.isSelected()));
+        cardCounterMenu.setOnAction(event -> cardsMarkedLabel.setVisible(cardCounterMenu.isSelected()));
         loadCards();
     }
 
 
     private void toggleCard(MouseEvent click, ListView listView){
-        if ((click.getClickCount() == 1 && singleClickCheckBox.isSelected()) || click.getClickCount() == 2) {
+        if ((click.getClickCount() == 1 && singleClickCheckBox.isSelected()) || click.getClickCount() == 2 && listView.getSelectionModel().getSelectedItem() != null) {
             Label label = (Label)listView.getSelectionModel().getSelectedItem();
             label.setDisable(!label.isDisabled());
+            if(label.isDisabled()){
+                cardsMarked += 1;
+
+            }else {
+                cardsMarked -= 1;
+            }
+            handsPlayed = (int) Math.floor(cardsMarked / 4);
+            updateLabels();
         }
         clearSelected();
     }
@@ -66,6 +86,10 @@ public class Controller implements Initializable
         clubsList.getSelectionModel().clearSelection();
     }
 
+    private void updateLabels(){
+        cardsMarkedLabel.setText("Cards Marked: " + cardsMarked);
+        handsPlayedLabel.setText("Hands Played: " + handsPlayed);
+    }
     /**
      * Fills the listviews with the standard deck of cards.
      */
@@ -75,6 +99,9 @@ public class Controller implements Initializable
         loadCards(heartsList,"♡", font, Color.RED);
         loadCards(clubsList, "♣", font, Color.BLACK);
         loadCards(diamondsList, "♢", font, Color.RED);
+        handsPlayed = 0;
+        cardsMarked = 0;
+        updateLabels();
     }
     /**
      * Loads the array of labels into the list views with a given text color and symbol to be appended at the end of the
