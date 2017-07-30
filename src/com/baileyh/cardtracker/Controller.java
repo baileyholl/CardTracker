@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,13 +28,13 @@ public class Controller implements Initializable
     @FXML
     private MenuItem closeMenuItem;
     @FXML
-    private ListView<Label> spadesList;
+    private ListView<Text> spadesList;
     @FXML
-    private ListView<Label> heartsList;
+    private ListView<Text> heartsList;
     @FXML
-    private ListView<Label> clubsList;
+    private ListView<Text> clubsList;
     @FXML
-    private ListView<Label> diamondsList;
+    private ListView<Text> diamondsList;
     @FXML
     private RadioMenuItem handCounterMenu;
     @FXML
@@ -42,6 +43,7 @@ public class Controller implements Initializable
     private Label handsPlayedLabel;
     @FXML
     private Label cardsMarkedLabel;
+
     private static int handsPlayed;
     private static int cardsMarked;
 
@@ -62,13 +64,16 @@ public class Controller implements Initializable
 
     private void toggleCard(MouseEvent click, ListView listView){
         if ((click.getClickCount() == 1 && singleClickCheckBox.isSelected()) || click.getClickCount() == 2 && listView.getSelectionModel().getSelectedItem() != null) {
-            Label label = (Label)listView.getSelectionModel().getSelectedItem();
-            label.setDisable(!label.isDisabled());
-            if(label.isDisabled()){
+            Text text = (Text) listView.getSelectionModel().getSelectedItem();
+            text.setDisable(!text.isDisabled());
+            if(text.isDisabled()){
                 cardsMarked += 1;
-
+                text.setStrikethrough(true);
+                text.setOpacity(.2);
             }else {
                 cardsMarked -= 1;
+                text.setStrikethrough(false);
+                text.setOpacity(1);
             }
             handsPlayed = (int) Math.floor(cardsMarked / 4);
             updateLabels();
@@ -112,9 +117,8 @@ public class Controller implements Initializable
      * @param font The font of the label boxes
      * @param color Color of the label text
      */
-    private void loadCards(ListView<Label> labelListView, String symbol, Font font, Color color){
-        labelListView.setItems(asObservable(
-                setColor(stringsToLabels(appendStringArray(cardList, symbol), font), color)));
+    private void loadCards(ListView<Text> labelListView, String symbol, Font font, Color color){
+        labelListView.setItems(asObservable(stringsToText(appendStringArray(cardList, symbol), font, color)));
     }
 
     private ObservableList asObservable(Object... collection){
